@@ -115,7 +115,7 @@ public class Marche {
 			t.randomsleep.court();
 		/*	try {	if (!t.getCompte().getDriver().getCurrentUrl().equals(t.getCompte().getServer()+"build.php?t=5&id=32")){
 				t.getCompte().getDriver().findElement(By.xpath("//*[contains(@href, 'build.php?t=5&id=32')]")).click();
-				t.randomsleep.court();
+				t.randomsleep.court();//ici test de connerie pour GitHub
 				}}catch(Exception e){System.out.println("Echec selection tab du marche ");}*/
 		//t.getCompte().getDriver().findElement(By.xpath("//*[@id=\"r4\"]")).clear();
 		t.getCompte().getDriver().findElement(By.xpath("//*[@id=\"r4\"]")).sendKeys("750");
