@@ -32,7 +32,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 		
 		public void lancerbot(Lancerbot bot) {
 			this.bot = bot;
-			tfenetre = new Fenetre(bot);
+			try {
+				tfenetre = new Fenetre(bot);
+			} catch (IOException e) {
+				System.out.println("IO exeption tocard");
+			}
 			
 		}
 
@@ -68,8 +72,8 @@ public WebDriver setDriver(WebDriver driver) {
 
 
 
-public void lancerTravian(){
-	travian = new Travian(bot);
+public void lancerTravian(String serveur, String nomDeCompte, String motDePasse){
+	travian = new Travian(bot, serveur, nomDeCompte, motDePasse);
 	travian.allume = true;
 	System.out.println(travian.getName());
     System.out.println(travian.getState());
@@ -97,14 +101,28 @@ public void reprendreTravian(){
 		
 	}
 	
-
+public void annulerPause(){
+	if (travian.isAlive()){
+		if (travian.randomsleep.enPause == true){
+		bot.travian.interrupt();
+		}
+		}
+}
 
 public void eteindreTravian(){
 	if (travian.isAlive()){
 	//	travian.stop();
 		travian.allume = false;
-		
+		//bot.tfenetre.console.destroy();
+	//	if(travian.randomsleep.enPause == false){
+	//	bot.travian.interrupt();
+	//	}
+		//bot.travian.arreter();
 		System.out.println("********* Arret Demande ************ Arret Demande ************** Arret Demande *************");
+		
+		//bot.travian.getCompte().getDriver().close();
+		//bot.travian.interrupt();
+		
 		//travian.notify();
 		
 		//travian.stop();
@@ -133,7 +151,7 @@ public void eteindreTravian(){
 	
 }
 
-
+/*
 public void attaque(){
 	try {Thread.sleep(20000);} catch (InterruptedException e) {e.printStackTrace();}
 	 travian.suspend();
@@ -206,7 +224,7 @@ listeAttaques.add(attaque8);
 	
 }
 
-
+*/
 
 
 

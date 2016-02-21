@@ -6,13 +6,14 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
 public class Compte {
-	//private String server = "http://ts2.travian.fr/";
-	//private String userName = "Bing";
-	//private String passWord = "go25hk6t";
-	//private WebDriver driver = new FirefoxDriver();
-	private String server = "http://ts2.travian.fr/";
+	private String server = "http://ts20.travian.fr/";
 	private String userName = "Drap-housse";
 	private String passWord = "6dst5rhx";
+	//private WebDriver driver = new FirefoxDriver();
+	//////////////////////////////////////////////
+	//private String server = "http://ts2.travian.fr/";
+	//private String userName = "Drap-housse";
+	//private String passWord = "6dst5rhx";
 	private WebDriver driver;
 	
 	public String getServer() {
@@ -46,6 +47,9 @@ public class Compte {
 		// driver = new ChromeDriver();
 		this.driver = driver;
 		
+	}
+	public Compte() {
+		// TODO Auto-generated constructor stub
 	}
 	
 }

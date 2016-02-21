@@ -351,9 +351,81 @@ public class Village {
 
 
 
+	public int getPhalanges() {
+		return phalanges;
+	}
+
+
+	public void setPhalanges(int phalanges) {
+		this.phalanges = phalanges;
+	}
+
+
+	public int getEpees() {
+		return epees;
+	}
+
+
+	public void setEpees(int epees) {
+		this.epees = epees;
+	}
+
+
+	public int getSpy() {
+		return spy;
+	}
+
+
+	public void setSpy(int spy) {
+		this.spy = spy;
+	}
+
+
+	public int getToutatis() {
+		return toutatis;
+	}
+
+
+	public void setToutatis(int toutatis) {
+		this.toutatis = toutatis;
+	}
+
+
+	public int getHeduins() {
+		return heduins;
+	}
+
+
+	public void setHeduins(int heduins) {
+		this.heduins = heduins;
+	}
+
+
+	public int getDruides() {
+		return druides;
+	}
+
+
+	public void setDruides(int druides) {
+		this.druides = druides;
+	}
+
+
+	public int getColons() {
+		return colons;
+	}
+
+
+	public void setColons(int colons) {
+		this.colons = colons;
+	}
+
+
+
+	public ArrayList<Ordre> listeOrdres = new ArrayList();	
 	private int manqueDeBois;
 	private int manqueDeArgile;
-	private int manqueDeFer;
+	private int manqueDeFer ;
 	private int manqueDeCereales;
 	private int maxStockDepot=720000;
 	private int maxStockSilo=1200000;
@@ -378,8 +450,14 @@ public class Village {
 	private boolean besoinDeNpc;
 	private boolean besoinMarche;
 	private int NombreDeMarchands;
-
-
+	private int phalanges;
+	private int epees;
+	private int spy;
+	private int toutatis;
+	private int heduins;
+	private int druides;
+	private int colons;
+	
 
 	private boolean cropDeath;
 	private boolean besoinDeConstruction;
@@ -527,7 +605,7 @@ public class Village {
 			boolean troupesPresentes = touta.findElement(By.className("un")).getText().contains("Éclairs de Toutatis");//Éclairs de Toutatis
 			int nombreTroupesPresentes = Integer.parseInt(touta.findElement(By.className("num")).getText());
 			if (troupesPresentes == true) {village.setVillagePillage(true);}
-				if(troupesPresentes && nombreTroupesPresentes >= 35){
+				if(troupesPresentes && nombreTroupesPresentes >= 10){
 					troupesAQuai = true;
 				}
 			
@@ -1082,6 +1160,16 @@ public void lancerFete(Travian t){  // a modifier : regarder avant les recap pou
 	}
 	
 }
+
+
+	public ArrayList<Ordre> getListeOrdres() {
+		return listeOrdres;
+	}
+
+
+	public void setListeOrdres(ArrayList<Ordre> listeOrdres) {
+		this.listeOrdres = listeOrdres;
+	}
 	
 	
 	

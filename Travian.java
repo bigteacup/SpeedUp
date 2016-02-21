@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 import org.apache.commons.collections.MapIterator;
@@ -26,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 
 
@@ -43,6 +45,7 @@ import org.openqa.selenium.interactions.SendKeysAction;
 import com.thoughtworks.selenium.webdriven.commands.GetText;
 
 public class Travian extends Thread {
+	Travian t = this;
 	private Compte compte;
 //	private Compte2 compte;
 	//private Palier palier;
@@ -58,29 +61,33 @@ public class Travian extends Thread {
 	List<WebElement> donneesRessourcesPourcentage;
 	List<WebElement> donneesPointsDeCulture;
 	int numeroDePhoto = 0;
-	Travian t = this;
+
 	//TeamplatesDeVillages template = new TeamplatesDeVillages();
 	public boolean allume = false;
 	//public boolean pillage = true;
 	//public boolean fete = true;
-	Lancerbot bot;
-	
-	
-	@Override
+	Lancerbot bot;	
+	private  AtomicReference<Thread> currentThread = new AtomicReference<Thread>();
+/*	@Override
 	public boolean isInterrupted() {
 		return super.isInterrupted();
 	}	
-	
+	*/
 	
 	private WebDriver driver;
 	
 	Hero hero = new Hero();
 	
 	
-	public Travian(Lancerbot bot) {
+	public Travian(Lancerbot bot, String serveur, String nomDeCompte, String motDePasse) {
 		super();
 		this.bot = bot;
-		
+		System.setProperty("webdriver.chrome.driver", "\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		compte = new Compte(driver);
+		compte.setServer(serveur);
+		compte.setUserName(nomDeCompte);
+		compte.setPassWord(motDePasse);
 		
 
 		
@@ -89,8 +96,7 @@ public class Travian extends Thread {
 	
 	public void run() {
 		while (allume) {
-			
-			principale();
+					principale();
 			System.out.println("dans le while");
 		}
 		System.out.println("sortie du run");
@@ -100,6 +106,11 @@ public class Travian extends Thread {
 		System.out.println(t.getName());
 	    System.out.println(t.getState());
 	    System.out.println("********* Bot eteind ************");
+	}
+	
+	
+	public void arreter(){
+		Thread.currentThread().interrupt();
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,15 +134,13 @@ public class Travian extends Thread {
 		
 	}
 
-	private void principale() {
+	private void principale()  {
 		////pour PROFIL CHROME
 	//	System.setProperty("webdriver.chrome.driver", "\\chromedriver.exe");
 	//	ChromeOptions options = new ChromeOptions();
 	//	options.addArguments("user-data-dir=/ProfilChromePourBot/MasterProfile");
 		//C:/Users/timseven/AppData/Local/Google/Chrome/User Data/
-		System.setProperty("webdriver.chrome.driver", "\\chromedriver.exe");
-		WebDriver driver = new ChromeDriver();
-		compte = new Compte(driver);
+		
 		
 		//System.setProperty("webdriver.chrome.driver", "C:\\Selenium2.45\\chrome\\chromedriver.exe");
 		//		driver = new ChromeDriver();//new ChromeDriver();
@@ -470,7 +479,7 @@ public class Travian extends Thread {
 		for(Village village : listeDeVillages ){
 			
 			
-			
+			if (allume == false){break;}
 			if (besoinDePasserSurLeVillage(village) == 1 ){
 				randomsleep.classic();
 			if (village != villageEnCours()){
@@ -480,27 +489,37 @@ public class Travian extends Thread {
 			}
 			//TODO Remonter chargerchamp pour rendre le NPC effectif des la premiere co
 			village.updateRessources(t);
+			if (allume == false){break;}
 			village.voirListeDeConstruction(t);
+			if (allume == false){break;}
 			village.chargerChamps(t);
+			if (allume == false){break;}
 			if (village.getBesoinDeNpc() == true && village.getVillageCapitale()==true){
 			npcNegatif();
 			}
 			
-			
-			if (village.getTokenconstruction() < 2){
+			if (allume == false){break;}
+			if (village.getTokenconstruction() < 2 && bot.tfenetre.faireConstruireBox.isSelected()){
 			gestionBatiments();
-			}
+			}else{System.out.println("construction Desactivees...");}
 			
-			
+			if (allume == false){break;}
 			marche.etablirBesoinEnRessources(t, village, listeDeVillages);
-			marche.evacuerSurplusCereales(t, village, listeDeVillages);
+			
+			if (allume == false){break;}
+			if (bot.tfenetre.evacuerRessourcesBox.isSelected()){
+			marche.evacuerSurplusRessources(t, village, listeDeVillages);
+			}else{System.out.println("Evacuation ressources Desactives...");}
+			
 			try { 
+				if (allume == false){break;}
 				if(bot.tfenetre.pillageBox.isSelected()){
 				village.voirTroupesDuVillage(t);
 				}else{System.out.println("Pillages Desactives...");}
 			}catch(Exception e){System.out.println("Echec pillage ");}
 			
 			try { 
+				if (allume == false){break;}
 			if(bot.tfenetre.faireFetes.isSelected()){
 				if (village.getChampMin() >= 10 && village.getBesoinDeFete() == 1){ 
 				if (village.getBois() >= 6400 && village.getArgile() >= 6650 && village.getFer() >= 5940 && village.getCereales() >= 1340 ){
@@ -673,6 +692,7 @@ public class Travian extends Thread {
 		
 	
 	private void aventureHero(){
+		int aventureTempsRestant = 110;
 		//boolean estPresent;
 		WebElement lienAventures;
 		int heure1 = 0;
@@ -692,7 +712,7 @@ public class Travian extends Thread {
 				heure1 = Integer.parseInt(compte.getDriver().findElement(By.xpath("//*[@class=\"text elementText\"]")).getText().split("dans ")[1].split(":")[0]);
 			
 			
-			if (heure1 <= 110){
+			if (heure1 <= aventureTempsRestant){
 			
 			compte.getDriver().findElement(By.xpath("//*[contains(@class, 'adventureWhite')]")).click();
 			randomsleep.court();
@@ -701,7 +721,7 @@ public class Travian extends Thread {
 				try { heure = compte.getDriver().findElement(By.xpath("//*[@id=\"timer1\"]"));
 				h = heure.getText().split(":")[0];
 				int h2 = Integer.parseInt(h);
-				if (h2 <= 110) {
+				if (h2 <= aventureTempsRestant) {
 				compte.getDriver().findElement(By.xpath("//*[@class=\"gotoAdventure arrow\"]")).click();
 				randomsleep.court();
 				compte.getDriver().findElement(By.xpath("//*[@id=\"start\"]/div/div[2]")).click();
@@ -776,7 +796,7 @@ public class Travian extends Thread {
 	
 	public List<String> chargerfrigo() {
 		  //On liste la liste principal de pillage
-		List<WebElement> frigosPremiereListe = compte.getDriver().findElements(By.xpath("//*[@id=\"list6258\"]//tbody/tr"));
+		List<WebElement> frigosPremiereListe = compte.getDriver().findElements(By.xpath("//*[@id=\"list1386\"]//tbody/tr"));
 		
 		//on liste les IDs des frigo a cause du rechargement de page qui detruit des Webelements  
 		List<String> frigoIds = new ArrayList<>();
@@ -829,7 +849,7 @@ public class Travian extends Thread {
 								
 				}
 		 //on click tout cocher
-		compte.getDriver().findElement(By.xpath("//*[@id=\"raidListMarkAll6258\"]")).click();
+		compte.getDriver().findElement(By.xpath("//*[@id=\"raidListMarkAll1386\"]")).click();
 		randomsleep.court();
 		
 		
@@ -945,7 +965,7 @@ public class Travian extends Thread {
 			  randomsleep.court();
 			  quete1Active.click();
 			  randomsleep.court();
-			//WebElement  lien = compte.getDriver().findElement(By.className("button-content")).getText().contains("RÈcompense");//*[@id="button5533e89cab960"]/div/div[2]
+			//WebElement  lien = compte.getDriver().findElement(By.className("button-content")).getText().contains("R√©compense");//*[@id="button5533e89cab960"]/div/div[2]
 		  }catch (Exception e) {
 				System.out.println("Pas de Cadeaux 1");} 
 		  
@@ -967,7 +987,9 @@ public class Travian extends Thread {
 
 		  //donnees globlales
 		  				// compte.getDriver().get("http://ts4.travian.fr/dorf3.php");
-		  		compte.getDriver().findElements(By.xpath("//button[contains(@class, 'layoutButton overviewWhite green')]")).get(1).click();
+		  try {
+		  		compte.getDriver().findElements(By.xpath("//button[contains(@class, 'layoutButton overviewWhite green')]")).get(1).click();  // si dans une alliance
+		  }catch (Exception e){compte.getDriver().findElements(By.xpath("//button[contains(@class, 'layoutButton overviewWhite green')]")).get(0).click(); } //sans alliance
 		  		randomsleep.court();
 		  		donneesGlobales = compte.getDriver().findElements(By.xpath("//*[@id=\"overview\"]/tbody/tr"));
 		  			randomsleep.court();
@@ -1031,6 +1053,14 @@ public class Travian extends Thread {
 					village.setFer(Integer.parseInt(compte.getDriver().findElement(By.xpath("//*[@id=\"ressources\"]/tbody/tr["+ (i+1) +"]/td[4]")).getText().replace(".", "")));
 					village.setCereales(Integer.parseInt(compte.getDriver().findElement(By.xpath("//*[@id=\"ressources\"]/tbody/tr["+ (i+1) +"]/td[5]")).getText().replace(".", "")));
 					village.setNombreDeMarchands(Integer.parseInt(compte.getDriver().findElement(By.xpath("//*[@id=\"ressources\"]/tbody/tr["+ (i+1) +"]/td[6]")).getText().split("/")[0].replaceAll("\\W", "")));
+					//String pageSource = compte.getDriver().findElement(By.id("lum")).getAttribute("innerHTML");
+					//String elemHtml = driver.findElement(By.id(‚ÄúsomeId‚Äù)).getAttribute(‚ÄúinnerHTML‚Äù);
+					//String pageSource = compte.getDriver().getPageSource() ;
+					//String page1 = pageSource;//split("vil fc")[1];
+					//System.out.println(""+ pageSource);
+				//	JavascriptExecutor executor = (JavascriptExecutor)compte.getDriver();
+				//	 String text= (String) executor.executeScript("document.getElementById('versionInfo').innerHTML");
+					//village.setMaxStockDepot(Integer.parseInt(pageSource.split("80000")[0].toString()));
 					System.out.println("Village: " +village.getNom()+ ":  Bois : " +village.getBois()+ " Argile : " +village.getArgile()+ " Fer : " +village.getFer()+ " Cereales : " +village.getCereales()+" Marchands Dispos : "+village.getNombreDeMarchands());
 					i++;
 		//TODO charger depot silot par pagesource et analyse de page ou par souris hover
@@ -1092,7 +1122,7 @@ public class Travian extends Thread {
 			 randomsleep.court();
 			 compte.getDriver().findElement(By.xpath("//div[contains(@class, 'favorKey0')]")).click();
 			 randomsleep.court();
-			 compte.getDriver().findElement(By.xpath("//button[contains(@value, '…change de ressources')]")).click();
+			 compte.getDriver().findElement(By.xpath("//button[contains(@value, '√âchange de ressources')]")).click();
 			 randomsleep.court();
 			 compte.getDriver().findElement(By.xpath("//*[@id=\"m2[3]\"]")).clear();
 			 compte.getDriver().findElement(By.xpath("//*[@id=\"m2[3]\"]")).sendKeys("1200000");
@@ -1122,7 +1152,7 @@ public class Travian extends Thread {
 		 for (Village village : listeDeVillages) {
 			 besoinDeFete = 0;
 			 try{
-				 if (village.getUrl().contains(donneesPointsDeCulture.get(i).findElement(By.xpath("//*[@id=\"culture_points\"]/tbody/tr["+ (i+1) +"]/td[1]/a")).getAttribute("href").split("php")[1]) && donneesPointsDeCulture.get(i).findElement(By.xpath("//*[@id=\"culture_points\"]/tbody/tr["+ (i+1) +"]/td[3]/a/span")).getText().equals("ï") ) {
+				 if (village.getUrl().contains(donneesPointsDeCulture.get(i).findElement(By.xpath("//*[@id=\"culture_points\"]/tbody/tr["+ (i+1) +"]/td[1]/a")).getAttribute("href").split("php")[1]) && donneesPointsDeCulture.get(i).findElement(By.xpath("//*[@id=\"culture_points\"]/tbody/tr["+ (i+1) +"]/td[3]/a/span")).getText().equals("‚Ä¢") ) {
 			 besoinDeFete = 1;
 			 village.setBesoinDeFete(besoinDeFete);
 			 i++;
@@ -1259,7 +1289,14 @@ public class Travian extends Thread {
 		  int besoin = 0;
 		  int besoin2 = 0;
 		  
-		  if (village.getChampsFinis() == false && village.getTokenconstruction() < 2 || village.getBesoinDeFete() == 1 ||village.getVillageCapitale() == true || village.getVillagePillage() == true || village.getCropDeath() == true || village.getTokenconstruction() < 2 && village.getBesoinDeConstruction() == true  ) {
+		  if (village.getChampsFinis() == false && village.getTokenconstruction() < 2 
+				  || village.getBesoinDeFete() == 1 
+				  || village.getVillageCapitale() == true 
+				  || village.getVillagePillage() == true 
+				  || village.getCropDeath() == true 
+				  || village.getTokenconstruction() < 2 && village.getBesoinDeConstruction() == true
+				  || village.getCereales() >= village.getMaxStockSilo()*90/100 
+			  	  || compteurDeBoot == 1)	{
 			  besoin = 1;
 		  }
 		  
@@ -1300,7 +1337,7 @@ public class Travian extends Thread {
 	    //////////////
 		  for (int i=0; i<repertoire.length; i++)
 	        {
-	            // Afficher le nom de chaque ÈlÈment
+	            // Afficher le nom de chaque √©l√©ment
 	            System.out.println(repertoire[i]);
 	        }
 		///////////

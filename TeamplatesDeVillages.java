@@ -65,13 +65,22 @@ public  class   TeamplatesDeVillages {
 		 listeDeBatimentsDuTeamplate1.add(new Batiment(depot, 5));
 		 listeDeBatimentsDuTeamplate1.add(new Batiment(residence, 5));
 		 listeDeBatimentsDuTeamplate1.add(new Batiment(marche, 3));
-
+		 listeDeBatimentsDuTeamplate1.add(new Batiment(poterie, 5));
+		 listeDeBatimentsDuTeamplate1.add(new Batiment(scierie, 5));
+		 listeDeBatimentsDuTeamplate1.add(new Batiment(fonderie, 5));
+		 listeDeBatimentsDuTeamplate1.add(new Batiment(moulin, 5));
+		 listeDeBatimentsDuTeamplate1.add(new Batiment(boulangerie, 5));
 		 
 		 
 		 listeDeBatimentsDuTeamplate2.add(new Batiment(moulin, 2));
 		 listeDeBatimentsDuTeamplate2.add(new Batiment(batiment_principal, 10));
 		 listeDeBatimentsDuTeamplate2.add(new Batiment(silo, 11));
 		 listeDeBatimentsDuTeamplate2.add(new Batiment(depot, 11));
+		 listeDeBatimentsDuTeamplate2.add(new Batiment(poterie, 5));
+		 listeDeBatimentsDuTeamplate2.add(new Batiment(scierie, 5));
+		 listeDeBatimentsDuTeamplate2.add(new Batiment(fonderie, 5));
+		 listeDeBatimentsDuTeamplate2.add(new Batiment(moulin, 5));
+		 listeDeBatimentsDuTeamplate2.add(new Batiment(boulangerie, 5));
 		 listeDeBatimentsDuTeamplate2.add(new Batiment(residence, 10));
 		 listeDeBatimentsDuTeamplate2.add(new Batiment(marche, 5));
 		 listeDeBatimentsDuTeamplate2.add(new Batiment(caserne, 3));
@@ -84,12 +93,16 @@ public  class   TeamplatesDeVillages {
 		 listeDeBatimentsDuTeamplate3.add(new Batiment(depot, 13));
 		 listeDeBatimentsDuTeamplate3.add(new Batiment(residence, 10));
 		 listeDeBatimentsDuTeamplate3.add(new Batiment(moulin, 4));
+		 listeDeBatimentsDuTeamplate3.add(new Batiment(poterie, 5));
+		 listeDeBatimentsDuTeamplate3.add(new Batiment(scierie, 5));
+		 listeDeBatimentsDuTeamplate3.add(new Batiment(fonderie, 5));
+		 listeDeBatimentsDuTeamplate3.add(new Batiment(boulangerie, 5));
 		 listeDeBatimentsDuTeamplate3.add(new Batiment(marche, 12));
 		 listeDeBatimentsDuTeamplate3.add(new Batiment(caserne, 5));
 		 listeDeBatimentsDuTeamplate3.add(new Batiment(academie, 10));
 		 listeDeBatimentsDuTeamplate3.add(new Batiment(palais, 20));
 		 listeDeBatimentsDuTeamplate3.add(new Batiment(tailleur, 20));
-		 
+		 		 
 
 		 listeDeBatimentsDuTeamplate4.add(new Batiment(poterie, 5));
 		 listeDeBatimentsDuTeamplate4.add(new Batiment(scierie, 5));

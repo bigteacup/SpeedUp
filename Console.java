@@ -22,14 +22,15 @@ public class Console extends Thread {
 	
 	public Console(Lancerbot bot) {
 		this.bot = bot;
-		consoleColored();
+		//consoleColored();
 	}
 	
 
 
 
-public JTextPane consoleColored(){
-		consoleColor = new JTextPane();
+public JTextPane consoleColored() throws IOException{
+	
+	consoleColor = new JTextPane();
 	    consoleColor.setFont(new Font("monospaced",Font.PLAIN,12));
 	    consoleColor.setBackground(Color.BLACK);
 	    consoleColor.setForeground(Color.LIGHT_GRAY);
@@ -51,11 +52,13 @@ public JTextPane consoleColored(){
 	         
 
 	      ///   
+	        
 	         @Override
-	         public void write(int b) throws IOException {  
-	        	  int end1 = consoleColor.getDocument().getEndPosition().getOffset(); //pour fin de fichier entier
+	         public void write(int b) throws IOException { 
+	        	 int end1 = consoleColor.getDocument().getEndPosition().getOffset(); //pour fin de fichier entier
 	           sb.append((char)b);
 	           sbRef.append((char)b);
+	         
 	      ////////////////////////////////////////////////////////////////////////////
 	      
 	         
@@ -144,7 +147,7 @@ public JTextPane consoleColored(){
 	                   }
 	              }
 	         
-
+	  
 	    }));
 	    
 		return consoleColor;

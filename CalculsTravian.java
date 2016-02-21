@@ -21,7 +21,7 @@ public class CalculsTravian {
 			CalculsTravian c = new CalculsTravian() ;
 			
 			
-			double dist = c.calculDeDistance(53, -56, 52, -56);
+			double dist = c.calculDeDistance(70, -8, 52, -56);
 			//double dist = c.calculDeDistance(53, -56, 55, -55);
 			//Double distCorrigee = c.arrondirADeuxChiffres(dist);
 			
