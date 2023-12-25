@@ -9,11 +9,11 @@ public class Compte2 {
 	private String server = "http://ts2.travian.fr/";
 //	private String server = "http://tx3.travian.fr/";
 	private String userName = "Bing";
-	private String passWord = "go25hk6t";
+	private String passWord = "jjjjjjj";
 	//private WebDriver driver = new FirefoxDriver();
 	//private String server = "http://ts4.travian.fr/";
 //	private String userName = "Bing";
-	//private String passWord = "6dst5rhx";
+	//private String passWord = "jjjjj";
 	private WebDriver driver;
 	
 	public String getServer() {
