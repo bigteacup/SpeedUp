@@ -8,11 +8,11 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 public class Compte {
 	//private String server = "http://ts2.travian.fr/";
 	//private String userName = "Bing";
-	//private String passWord = "go25hk6t";
+	//private String passWord = "ffggggg";
 	//private WebDriver driver = new FirefoxDriver();
 	private String server = "http://ts2.travian.fr/";
 	private String userName = "Drap-housse";
-	private String passWord = "6dst5rhx";
+	private String passWord = "ggggg";
 	private WebDriver driver;
 	
 	public String getServer() {
